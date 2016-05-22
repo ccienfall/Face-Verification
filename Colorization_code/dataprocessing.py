@@ -10,7 +10,7 @@ import sys
 import h5py
 from tqdm import tqdm
 
-RGB2YUV = (np.array([0.257,0.504,0.098,-0.148,-0.291,0.439,0.439,-0.368,-0.071])).reshape(3,3)
+RGB2YUV = (np.array([0.212600,0.715200,0.072200,-0.114572,-0.385428,0.500000,0.500000,-0.454153 ,-0.045847 ])).reshape(3,3)
 #image_dir = '/home/ccien/FaceIdentification/img_align_celeba/'
 image_dir = '/data/chencj/Face/img_align_celeba/'
 try:
@@ -26,10 +26,12 @@ def process_image(im):
         im = im.convert("RGB")
     new_size = [int(i/1.3) for i in im.size]
     im.thumbnail(new_size, Image.ANTIALIAS)
-    target = np.array(im)[3:-3,4:-4,:]
-    for i in range(160):
-        for j in range(128):
-            target[i,j]=(np.dot(RGB2YUV,target[i,j].reshape(3,1))).reshape(3)+np.array([16,128,128])
+    target = np.array(im,dtype=float64)[3:-3,4:-4,:]
+    target = np.dot(target.reshape(-1,3),RGB2YUV.transpose())
+    target = target.reshape(160,128,3)
+#    for i in range(160):
+#        for j in range(128):
+#            target[i,j]=(np.dot(RGB2YUV,target[i,j].reshape(3,1))).reshape(3)+np.array([16,128,128])
     return target[:,:,0:1],target[:,:,1:]
 
 
