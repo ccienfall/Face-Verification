@@ -1,7 +1,7 @@
 from fuel.datasets.hdf5 import H5PYDataset
 from fuel.schemes import ShuffledScheme, SequentialScheme
 from fuel.streams import DataStream
- 
+
 import h5py
 def data():
 
